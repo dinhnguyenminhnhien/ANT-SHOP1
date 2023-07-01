@@ -27,50 +27,36 @@ MongoClient.connect(connectionString, (err, client) => {
     // server -> create -> collection -> 'quotes'
     const quotesCollection = db.collection('quotes')
 
-    // client -> button -> submit -> request -> post -> '/quotes' 
-    app.post('/quotes', (req, res) => {
-
-        // server -> insert -> data -> from client 
+    app.post('/AddProduct', (req, res) => {
         quotesCollection.insertOne(req.body)
-            .then(result => {
-                
-                // server -> result -> console 
-                res.redirect('/')
-            })
-            .catch(error => console.error(error))
-
+        .then(rs => {
+            res.redirect('back')
+        })
+        .catch(err => {
+            console.error(err)
+            return res.redirect('back')
+        })
     })
 
-    // We normally abbreviate `request` to `req` and `response` to `res`.
-    // client -> request -> localhost:3000 -> server -> response -> index.html
-    // server -> find -> database -> collection -> quotes -> documents
     app.get('/', (req, res) => {
         db.collection('quotes').find().toArray()
-        .then(results => {
-        
-            //console.log(results)
-            // server -> index.ejs -> client 
-            res.render('index.ejs', { quotes: results })
-        
+        .then(rs => {
+            res.render('index', {quotes: rs})
         })
-        .catch(error => console.error(error))
-        
+        .catch(err => console.error(err))
     })
 
-    app.get('/quotes/remove/:id', (req, res) => {
+    app.get('/RemoveProduct/:id', (req, res) => {
         db.collection('quotes').deleteOne({_id: ObjectId(req.params.id)})
         .then(results => {
-            res.redirect('/');
-        
+            res.redirect('back');
         })
         .catch(error => console.error(error))
         
     })
 
-
-    // server -> listen -> port -> PORT
     app.listen(PORT, function() {
-        console.log('listening on ' + PORT)
+        console.log('listening on http://localhost:' + PORT)
     })
 
 })

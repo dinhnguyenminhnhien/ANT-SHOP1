@@ -16,16 +16,13 @@
         <h2> Product </h2>
         <ul class="Product">
             <!-- Loop through Product -->
-            <% for(var i = 0; i < Product.length; i++) {%>
-                <li class="Product">
-                    
-                        <!-- Output name from the iterated price object -->
-                        <span><%= Product[i].name %></span>:
-                        <!-- Output price from the iterated price object -->
-                        <span><%= Product[i].price %></span>
-                        <a href="/Product/remove/<%= price[i]._id %>">Remove</a>
-                </li>
-            <% } %>
+            <ul>
+                <% for(var i=0; i<quotes.length; i++) { %>
+                    <li>
+                        Name: <%= quotes[i].name %> - Price: <%= quotes[i].price %> <a href="/RemoveProduct/<%= quotes[i]._id %>">Remove</a>
+                    </li>
+                <% } %>
+            </ul>
         </ul>
 
     </body>
